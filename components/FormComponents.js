@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
         marginTop: 15
     },
     inputText: {
-        color:'#757575'
+        color:'#757575',
+        paddingBottom: 6
     },
     label: {
         marginLeft: 20,
