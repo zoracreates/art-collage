@@ -25,7 +25,7 @@ export default class PostFrom extends React.Component {
     render(props) {
         let { image } = this.state;
         return (
-            <KeyboardAwareScrollView>
+            <KeyboardAwareScrollView enableOnAndroid={true}>
                 <View style={styles.imgContainer}>
                     {image &&
                         <Image

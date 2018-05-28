@@ -40,7 +40,7 @@ export default class EditProfileScreen extends React.Component {
                     title='Edit Profile'
                 />
 
-                <KeyboardAwareScrollView>
+                <KeyboardAwareScrollView enableOnAndroid={true}>
                     <View style={styles.imgContainer}>
                         {image &&
                             <Image

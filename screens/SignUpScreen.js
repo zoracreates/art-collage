@@ -29,7 +29,7 @@ export default class SignUpScreen extends React.Component {
     render() {
         return (
             <MainContainer style={styles.container}>
-                <KeyboardAwareScrollView>
+                <KeyboardAwareScrollView enableOnAndroid={true}>
                     <Text h3 style={styles.title}>Welcome to Art Collage!</Text>
 
                     <Card>
