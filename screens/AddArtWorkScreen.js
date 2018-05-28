@@ -59,7 +59,7 @@ export default class AddArtWorkScreen extends React.Component {
         // Create a reference for the image
         const storageRef = storage.ref();
         const timeStamp = new Date().getTime();
-        const path = `images/${userId}/${timeStamp}.jpg`;
+        const path = `ArtworkImages/${userId}/${timeStamp}.jpg`;
         const ref = storageRef.child(path);
 
         const response = await fetch(info.updateImage);
