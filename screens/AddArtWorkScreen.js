@@ -1,10 +1,9 @@
 import React from 'react';
-import { auth, database } from '../database/config'
+import { auth, database, storage } from '../database/config'
 
 import { MainContainer } from '../components/Containers';
 import AppHeader from '../components/AppHeader';
 import PostFrom from '../screen-views/PostForm';
-
 
 const placeholder = require('../assets/placeholder.png');
 
@@ -53,19 +52,47 @@ export default class AddArtWorkScreen extends React.Component {
         );
     }
     // send art work information to the database
-    addWork(info) {
+    async addWork(info) {
         this.setState({ loading: true })
         const userId = auth.currentUser.uid;
-        database.ref(`users/${userId}/images`).push({
-            imageURL: info.updateImage,
-            title: info.title,
-            description: info.description
-        }).catch((error) => {
-            alert('Sorry, could not add image.');
-        }).then((snapshot) => {
-            this.setState({ loading: false })
-            this.props.navigation.navigate('ArtWork', { artId: snapshot.key });
-        });
+
+        // Create a reference for the image
+        const storageRef = storage.ref();
+        const timeStamp = new Date().getTime();
+        const path = `images/${userId}/${timeStamp}.jpg`;
+        const ref = storageRef.child(path);
+
+        const response = await fetch(info.updateImage);
+        const blob = await response.blob();
+
+        // store image in cloud storage
+        await ref.put(blob)
+            .catch(
+                () => {
+                    alert('Could not upload image')
+                }
+            )
+            .then(() => {
+                // get the url
+                return ref.getDownloadURL();
+            })
+            .then((url) => {
+                // store image information to real time databae, including the path information
+                database.ref(`users/${userId}/images`).push({
+                    imageURL: url,
+                    title: info.title,
+                    description: info.description,
+                    path: path
+                })
+                    .catch((error) => {
+                        alert('Sorry, could not add image information.');
+                    })
+                    .then((snapshot) => {
+                        this.setState({ loading: false })
+                        this.props.navigation.navigate('ArtWork', { artId: snapshot.key });
+                    })
+
+            });
 
     }
 }

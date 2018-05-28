@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Image, TouchableOpacity, ScrollView, TextInput, Dimensions } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import {blob} from 'expo'
 
 import { PrimaryButton, LoadingButton } from '../components/StyledButtons';
 import { DeviceScroll } from '../components/Containers';
