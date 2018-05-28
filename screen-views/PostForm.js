@@ -3,7 +3,7 @@ import { StyleSheet, View, Image, TouchableOpacity, ScrollView, TextInput, Dimen
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { PrimaryButton, LoadingButton } from '../components/StyledButtons';
-import { DeviceScroll } from '../components/Containers';
+import { DeviceScroll, MainContainer } from '../components/Containers';
 import { TextEntry, TextArea, ValidationError, FormLabel } from '../components/FormComponents';
 import { maxChars } from '../helpers/FormVerification'
 import GetImageLinks from '../components/GetImageLinks'
