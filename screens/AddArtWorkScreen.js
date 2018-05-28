@@ -93,7 +93,6 @@ export default class AddArtWorkScreen extends React.Component {
                     })
 
             });
-
     }
 }
 
