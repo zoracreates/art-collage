@@ -1,13 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, ScrollView, TextInput , Text} from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, ScrollView, TextInput, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { auth, database, storage } from '../database/config'
+import { auth, database } from '../database/config'
 
 import { PrimaryButton, LoadingButton } from '../components/StyledButtons';
 import { DeviceScroll, MainContainer } from '../components/Containers';
 import AppHeader from '../components/AppHeader';
 import { TextEntry, TextArea, ValidationError, FormLabel } from '../components/FormComponents';
 import { maxChars, requiredField } from '../helpers/FormVerification'
+import { updateProfileImage } from '../helpers/UpdateImage'
 import GetImageLinks from '../components/GetImageLinks'
 
 // present a form for the user to upload the profile
@@ -38,7 +39,7 @@ export default class EditProfileScreen extends React.Component {
                     leftPress={() => this.props.navigation.navigate('Profile')}
                     title='Edit Profile'
                 />
-                
+
                 <KeyboardAwareScrollView>
                     <View style={styles.imgContainer}>
                         {image &&
@@ -141,7 +142,7 @@ export default class EditProfileScreen extends React.Component {
             this.submit(validationValue);
         }
         else {
-            this.setState({loading: false});
+            this.setState({ loading: false });
         }
 
 
@@ -150,7 +151,8 @@ export default class EditProfileScreen extends React.Component {
     // submit the form
     submit(validated) {
 
-        let {name, imageUpdate, website, bio} = this.state;
+        let { name, imageUpdate, website, bio } = this.state;
+        const user = auth.currentUser.uid;
 
         let dataUpdates = {
             displayName: name,
@@ -158,18 +160,29 @@ export default class EditProfileScreen extends React.Component {
             website: website,
             bio: bio
         }
-        if(!imageUpdate) {
+        if (!imageUpdate) {
             delete dataUpdates.photoURL;
+            this.updateDatabase(dataUpdates);
         }
-        const user = auth.currentUser.uid;
-        
+        else {
+            updateProfileImage(dataUpdates, user)
+                .then(() => {
+                    this.setState({ loading: false });
+                    this.props.navigation.navigate('Profile');
+                }
+                );
+        }
+    }
+
+    updateDatabase(dataUpdates) {
         // update website and bio on the firebase realtime database
-        database.ref(`users/${user}/profile`).set(dataUpdates).then(()=>{
-            this.setState({loading: false});
+        database.ref(`users/${user}/profile`).set(dataUpdates).then(() => {
+            this.setState({ loading: false });
             this.props.navigation.navigate('Profile');
         }).catch((error) => {
             alert('Sorry, could not update profile, please try again.');
         });
+
     }
 }
 
