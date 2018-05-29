@@ -91,7 +91,6 @@ export default class AddArtWorkScreen extends React.Component {
                         this.setState({ loading: false })
                         this.props.navigation.navigate('ArtWork', { artId: snapshot.key });
                     })
-
             });
     }
 }

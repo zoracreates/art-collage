@@ -165,6 +165,7 @@ export default class EditProfileScreen extends React.Component {
             this.updateDatabase(dataUpdates);
         }
         else {
+            // if there is an image ad it to cloud storage and then update database
             updateProfileImage(dataUpdates, user)
                 .then(() => {
                     this.setState({ loading: false });

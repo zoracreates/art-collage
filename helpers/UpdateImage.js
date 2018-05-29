@@ -35,3 +35,39 @@ export async function updateProfileImage(updates, userId) {
             })
         });
 }
+
+
+export async function updateArtworkImage(updates, imageLocation) {
+    // Construct image reference
+    const storageRef = storage.ref();
+    const path = imageLocation.path;
+    const ref = storageRef.child(path);
+
+    const response = await fetch(updates.imageURL);
+    const blob = await response.blob();
+
+    // store image in cloud storage
+    await ref.put(blob)
+        .catch(
+            () => {
+                alert('Could not upload image')
+            }
+        )
+        .then(() => {
+            // get the url
+            return ref.getDownloadURL();
+        })
+        .then((url) => {
+            // store image information to real time databae, including the path information
+            database.ref(`users/${imageLocation.userId}/images/${imageLocation.artId}`).update({
+                imageURL: url,
+                title: updates.title,
+                description: updates.description,
+                path: path
+            })
+                .catch((error) => {
+                    alert('Sorry, could not add image information.');
+                })
+        });
+
+}

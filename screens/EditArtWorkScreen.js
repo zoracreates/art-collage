@@ -1,8 +1,10 @@
 import React from 'react';
+import { auth, database, storage } from '../database/config';
+
 import { MainContainer } from '../components/Containers';
 import AppHeader from '../components/AppHeader';
 import PostFrom from '../screen-views/PostForm';
-import { auth, database } from '../database/config';
+import { updateArtworkImage } from '../helpers/UpdateImage'
 import PageLoading from '../components/PageLoading';
 
 const placeholder = 'http://via.placeholder.com/350x150';
@@ -22,6 +24,7 @@ export default class EditArtWorkScreen extends React.Component {
                     image: snapshot.val().imageURL,
                     title: snapshot.val().title,
                     description: snapshot.val().description,
+                    path: snapshot.val().path,
                     artId: artId,
                 })
             });
@@ -39,6 +42,7 @@ export default class EditArtWorkScreen extends React.Component {
             description: 'loading',
             artId: 'NO-ID',
             updateImage: '',
+            path: 'loading',
             deleting: false,
         }
 
@@ -87,9 +91,28 @@ export default class EditArtWorkScreen extends React.Component {
             description: info.description,
             title: info.title,
         };
+
+        let imageLocation = {
+            path: this.state.path,
+            userId: userId,
+            artId: artId
+        }
         if (!updates.imageURL) {
             delete updates.imageURL;
+            this.updateDatabase(updates, artId, userId);
         }
+        else {
+            updateArtworkImage(updates, imageLocation)
+                .then(() => {
+                    // clear spinner
+                    this.setState({ loading: false })
+                    this.props.navigation.navigate('ArtWork', { artId: this.state.artId });
+                }
+                );
+        }
+    }
+
+    updateDatabase(updates, artId, userId) {
         database.ref(`users/${userId}/images/${artId}`).update(updates).catch((error) => {
             alert('Sorry, could not update image.');
         }).then(() => {
@@ -104,9 +127,17 @@ export default class EditArtWorkScreen extends React.Component {
         this.setState({ deleting: true });
         const artId = this.state.artId;
         const userId = auth.currentUser.uid;
-        database.ref(`users/${userId}/images/${artId}`).remove().then(() => {
-            this.setState({ deleting: false });
-            this.props.navigation.navigate('Profile');
-        });
+        // Construct image reference
+        const storageRef = storage.ref();
+        const path = this.state.path;
+        const imageRef = storageRef.child(path);
+        imageRef.delete()
+            .then(() => {
+                database.ref(`users/${userId}/images/${artId}`).remove().then(() => {
+                    this.setState({ deleting: false });
+                    this.props.navigation.navigate('Profile');
+                })
+            });
+
     }
 }
