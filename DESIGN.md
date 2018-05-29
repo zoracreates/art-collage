@@ -2,7 +2,7 @@
 
 ##Design Summary
 
-Art Collage is built with React Native. It uses Firebase for its email and password authentication and Realtime Database storage. The application is built on top of Expo, primarily to ease publication and testing on a mobile device. In addition, Art Collage uses Expo’s Image Picker, which provides a simple API for accessing a user’s phone camera and photo gallery.
+Art Collage is built with React Native. It uses Firebase for its email and password authentication, Realtime Database storage, and Cloud Storage. The application is built on top of Expo, primarily to ease publication and testing on a mobile device. In addition, Art Collage uses Expo’s Image Picker, which provides a simple API for accessing a user’s phone camera and photo gallery.
 
 Other relevant dependencies include React Native Elements, as a UI kit, React Native Keyboard Aware Scroll View for creating scrollable forms—React Native does not automatically make screens scroll or avoid the user’s keyboard—, and React Navigation for moving around the app.
 
