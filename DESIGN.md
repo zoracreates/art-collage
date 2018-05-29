@@ -117,7 +117,7 @@ This folder contains several components that are meant to be reused throughout t
 
 This folder is meant to contain reusable helper functions. Inside it are the files `FormVerification.js`  and `UpdateImage.js`.
 
-####helpers/FormVerification.js
+#### helpers/FormVerification.js
 
 - `maxChars` takes a string as `field`, and a number that indicates the maximum number of characters that field should be. It returns an error message if the `field` string is too long.
 
@@ -125,8 +125,7 @@ This folder is meant to contain reusable helper functions. Inside it are the fil
 
 - `emailCheck` verifies wether a string follows the pattern on an email address, and like `requiredField`, it returns an object with a `validation` boolean and a `message` string. While Firebase can verify if a string has an email format, having this verified in the front end can give quicker feedback to users.
 
-<<<<<<< HEAD
-####helpers/Update.js
+#### helpers/Update.js
 
 This file contains two functions that write or overwrite the images in a given path on the cloud base storage, and also update information on the database.
 
@@ -135,10 +134,7 @@ This file contains two functions that write or overwrite the images in a given p
 - `updateArtworkImage` handles the submission of a new artwork image and artwork information.
 
 
-###Screens and Screen-Views Folders
-=======
 ### Screens and Screen-Views Folders
->>>>>>> 7f03e1ff3345822394c909f7612f732577545828
 
 The `screens` folder contains the main views of the application. These are the components that serve as `screens` on the `Authenticate` and `Home` components.  Some of these components are made of other smaller components contained within the `screen-views` folder. Breaking components this way facilitates debugging and makes the code easier to reuse.
 
