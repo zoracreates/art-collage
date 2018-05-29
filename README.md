@@ -8,7 +8,7 @@ Art Collage is an application designed for creating a quick mobile art portfolio
 
 The application was published using Expo, and can be viewed by downloading the Expo Client app. 
 
-Afterwards you can visit <https://exp.host/@cs50project/art-collage> to request a text with a link to open the project on Expo.
+Afterwards you can visit <https://exp.host/@zmcabrera/art-collage> to request a text with a link to open the project on Expo.
 
 Unfortunately, due to recent iOS guideline [changes](https://blog.expo.io/upcoming-limitations-to-ios-expo-client-8076d01aee1a), Expo Client on iPhone only allows users to view apps they have created. 
 
