@@ -114,13 +114,24 @@ This folder contains several components that are meant to be reused throughout t
 
 ###Helpers Folder
 
-This folder is meant to contain reusable helper functions. Inside it is the file `FormVerification.js` which contains 3 functions used throughout the app to verify that the correct information was entered by the user.
+This folder is meant to contain reusable helper functions. Inside it are the files `FormVerification.js`  and `UpdateImage.js`.
+
+####helpers/FormVerification.js
 
 - `maxChars` takes a string as `field`, and a number that indicates the maximum number of characters that field should be. It returns an error message if the `field` string is too long.
 
 - `requiredField` takes the name of a form’s field as `messageName`, and the value of that field as `formField`. It then checks wether the value exists. If the value does not exist, it returns an object with a `validation` key set to false, and an error `message` that contains the field’s name.
 
 - `emailCheck` verifies wether a string follows the pattern on an email address, and like `requiredField`, it returns an object with a `validation` boolean and a `message` string. While Firebase can verify if a string has an email format, having this verified in the front end can give quicker feedback to users.
+
+####helpers/Update.js
+
+This file contains two functions that write or overwrite the images in a given path on the cloud base storage, and also update information on the database.
+
+- `updateProfileImage` handles the submission of a new profile image and new profile information.
+
+- `updateArtworkImage` handles the submission of a new artwork image and artwork information.
+
 
 ###Screens and Screen-Views Folders
 
@@ -180,7 +191,7 @@ If `artId` corresponds to an image in the database, then this image’s URL, tit
 
 ######screen-views/EditProfileForm
 
-`EditProfileForm` auto populates the user’s information to a form, so they may edit their current information. The information is held on the components `state`. When a user changes their information in the form, the `state` is updated. Then, when the user taps the `UPDATE` button returned by `handleLoading()`, the user’s information is retrieved from the `state` and passed to `verifyForm()`. If the user has provided valid information (mainly included a name, and submitted a website that includes http or https), then the information is updated in the database by the `submit()` function.
+`EditProfileForm` auto populates the user’s information to a form, so they may edit their current information. The information is held on the components `state`. When a user changes their information in the form, the `state` is updated. Then, when the user taps the `UPDATE` button returned by `handleLoading()`, the user’s information is retrieved from the `state` and passed to `verifyForm()`. If the user has provided valid information (mainly included a name, and submitted a website that includes http or https), then the information is updated in the database and cloud storage by the `submit()` function.
 
 
 #####screens/AddArtWorkScreen.js 
@@ -189,7 +200,7 @@ If `artId` corresponds to an image in the database, then this image’s URL, tit
 
 `AddArtWorkScreen` also verifies that an image has in fact been captured or chosen by the users. If the user has not taken a picture or selected one from their gallery, the then `PostForm` will not return an image’s URL to `AddArtWorkScreen`. At this point,  the `handleSubmission()` function in `AddArtWorkScreen` will return an error to the user.
 
-If an image’s URL is received by `handleSubmission()`, then `addWork()` will be called to `push()` the image to the database. This Firebase database `push()` method automatically generates a unique key for the image.
+If an image’s URL is received by `handleSubmission()`, then `addWork()` will be called to add the image to the Firebase cloud storage and database.
 
 ##### screens/EditArtWorkScreen.js
 
@@ -199,7 +210,7 @@ The screen receives the current image’s database key as a parameter and rememb
 
 This screen allows the user to either edit an artwork’s information or delete an artwork from the database.
 
-If the user taps the `PUBLISH` button rendered by `PostFrom` then `handleSumbis`sion()` is called. This function has a callback to `editWork()` which takes care of updating the information in the database.
+If the user taps the `PUBLISH` button rendered by `PostFrom` then `handleSumbis`sion()` is called. This function has a callback to `editWork()` which takes care of updating the information in the database and cloud storage.
 
 If the user wishes to remove an art work, they can tap `Delete` on the `AppHeader` component. This triggers `deleteWork()`, which sets the `deleting` state of the component to true, and  removes the artwork from the database. While the `deleting` state is true, `renderDelete()` causes the page to render a spinner icon through the use of a `PageLoading` component.
 
